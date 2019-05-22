@@ -1,2 +1,2 @@
 # go-restful-api
-RESTful API with GOlang
+RESTful API with GO
