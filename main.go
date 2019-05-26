@@ -14,13 +14,17 @@ func main() {
 
 	s := r.PathPrefix("/api").Subrouter()
 
-	s.HandleFunc("/customers", handler.CustomerGetAllHandler).Methods("GET")
-	s.HandleFunc("/customers/{id}", handler.CustomerGetByIdHandler).Methods("GET")
-	s.HandleFunc("/customers", handler.CustomerGetByNameHandler).Queries("name", "{name}").Methods("GET")
-	s.HandleFunc("/customers", handler.CustomerPostHandler).Methods("POST")
-	s.HandleFunc("/customers/{id}", handler.CustomerPutByIdHandler).Methods("PUT")
-	s.HandleFunc("/customers/{id}", handler.CustomerDeleteByIdHandler).Methods("DELETE")
+	ch := handler.CustomerHandler{}
+	ch.Initialize()
+
+	s.HandleFunc("/customers/{id}", ch.CustomerGetByIdHandler).Methods("GET")
+	s.HandleFunc("/customers", ch.CustomerGetByNameHandler).Queries("name", "{name}").Methods("GET")
+	s.HandleFunc("/customers", ch.CustomerGetAllHandler).Methods("GET")
+	s.HandleFunc("/customers", ch.CustomerPostHandler).Methods("POST")
+	s.HandleFunc("/customers/{id}", ch.CustomerPutByIdHandler).Methods("PUT")
+	s.HandleFunc("/customers/{id}", ch.CustomerDeleteByIdHandler).Methods("DELETE")
 
 	fmt.Println("Server running ...")
+
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
